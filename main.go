@@ -17,7 +17,7 @@ func main() {
 	for {
 		// print the prompt and wait for user input
 		fmt.Fprint(os.Stdout, "$ ")
-		command, err := bufio.NewReader(os.Stdin).ReadString('\n') // Wait for user input
+		command, err := bufio.NewReader(os.Stdin).ReadString('\n')
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
