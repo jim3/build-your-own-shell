@@ -7,7 +7,7 @@ This challenge is about coding your own **POSIX compliant shell**. Once complete
 All that being said, with 40+ stages this is gonna take a while for sure 😅...will be fun though....
 
 
-#### Example Output
+#### Example Output for the `type builtin: builtins #ez5` stage
 
 ```bash
 $ ./my_shell
