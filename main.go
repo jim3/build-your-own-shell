@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"strings"
 )
 
@@ -15,8 +16,8 @@ var builtin = map[string]bool{
 
 func main() {
 	for {
-		// print the prompt and wait for user input
 		fmt.Fprint(os.Stdout, "$ ")
+		// Wait for user input
 		command, err := bufio.NewReader(os.Stdin).ReadString('\n')
 		if err != nil {
 			fmt.Println("Error:", err)
@@ -24,27 +25,27 @@ func main() {
 		}
 		// get the shell command and trim spaces
 		command = strings.TrimSpace(command)
-
-		// put the command into a slice
 		var cmd = strings.Fields(command)
 
+		// Handle built-in commands
 		switch cmd[0] {
 		case "exit":
 			os.Exit(0)
-			// echo the rest of the command
 		case "echo":
 			s := strings.Join(cmd[1:], " ")
 			fmt.Println(s)
 		case "type":
-			// check if they forgot to add an argument
+			isBuiltin := cmd[1]
+			isExe := cmd[1]
+
 			if len(cmd) < 2 {
 				fmt.Println("type: missing argument")
 				continue
 			}
-			// check if the argument is a builtin command
-			isBuiltin := cmd[1]
 			if _, ok := builtin[isBuiltin]; ok {
-				fmt.Println(isBuiltin, "is a 🐚 builtin")
+				fmt.Println(isBuiltin, "is a shell builtin")
+			} else if pathExe, err := exec.LookPath(isExe); err == nil {
+				fmt.Printf("%v is %v\n", isExe, pathExe)
 			} else {
 				fmt.Println(isBuiltin + ": not found")
 			}
