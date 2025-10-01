@@ -1,0 +1,8 @@
+# ignore junk folder and everything in it
+junk/
+
+# ignore all .log files
+*.log
+
+# ignore all .tmp files in the temp folder
+temp/*.tmp
