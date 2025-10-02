@@ -24,20 +24,28 @@ func main() {
 			fmt.Println("Error:", err)
 			return
 		}
-		// Trim spaces and get shell command
 		command = strings.TrimSpace(command)
 		var cmd = strings.Fields(command)
 
-		// Handle builtin commands and executables
+		if len(cmd) == 0 {
+			continue
+		}
+		// Handle built-in commands
 		switch cmd[0] {
 		case "exit":
 			os.Exit(0)
 		case "echo":
 			s := strings.Join(cmd[1:], " ")
 			fmt.Println(s)
+		case "pwd":
+			dir, err := os.Getwd()
+			if err != nil {
+				fmt.Println("Error:", err)
+			} else {
+				fmt.Println(dir)
+			}
 		case "type":
 			isBuiltin := cmd[1]
-
 			if len(cmd) < 2 {
 				fmt.Println("type: missing argument")
 				continue
@@ -50,7 +58,7 @@ func main() {
 				fmt.Println(isBuiltin + ": not found")
 			}
 		default:
-			// Run external programs with arguments
+			// Handle external commands
 			if _, err := exec.LookPath(cmd[0]); err == nil {
 				command := exec.Command(cmd[0], cmd[1:]...)
 				command.Stdout = os.Stdout
